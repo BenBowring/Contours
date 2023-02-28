@@ -116,6 +116,7 @@ granularilty = st.sidebar.selectbox('Select Granularity:', ['S', 'M', 'L'])
 size = st.sidebar.selectbox('Select Scale:', ['S', 'M', 'L'])
 show_labs = st.sidebar.radio('Show Elevation Labels:', ['Nah', 'Yes'])
 
+
 # Define dicts so we can pull associated values
 
 granny_dict = {'S': 5, 'M': 9, 'L': 15}
