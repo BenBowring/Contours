@@ -114,7 +114,7 @@ def update_chart(input1, input2, granularity, size = 2, labels = True):
 city = st.sidebar.selectbox('Select City:', ['Belfast', 'Edinburgh', 'New York', 'Rio'])
 granularilty = st.sidebar.selectbox('Select Granularity:', ['S', 'M', 'L'])
 size = st.sidebar.selectbox('Select Scale:', ['S', 'M', 'L'])
-show_labs = st.sidebar.radio('Show Elevation Labels:', ['Yes', 'Nah'])
+show_labs = st.sidebar.radio('Show Elevation Labels:', ['Nah', 'Yes'])
 
 # Define dicts so we can pull associated values
 
