@@ -105,7 +105,7 @@ def update_chart(input1, input2, granularity, size, elev_labels, city_label, lin
     return fig
 
 # Initiate sidebar with text and the like
-st.sidebar.title("Plot the contour map for a certain city or custom co-ords :globe_with_meridians:")
+st.sidebar.title("Plot the contour map for a certain city or custom co-ordinates  :globe_with_meridians:")
 st.sidebar.header(
     "_Adjust the scale & colours of map and hover over to download!_"
 )
@@ -116,18 +116,34 @@ st.sidebar.write(
 st.sidebar.markdown('#')
 
 # Define dictionaries that hold keys in selections and associated values
-scale_dict = {'S': [5,2], 'M': [9,3], 'L': [15,5]}
+scale_dict = {'Small': [5,2], 'Medium': [9,3], 'Large': [15,5]}
 label_dict = {'Yes': True, 'Nah': False}
-city_dict = {'Belfast': [54.5973, -5.9301], 'Edinburgh': [55.9533, -3.1883], 
-             'New York': [40.7128, -74.0060], 'Rio': [-22.9068, -43.1729]}
+city_dict = {'Belfast': [54.5973, -5.9301], 'Edinburgh': [55.9533, -3.1883], 'New York': [40.7128, -74.0060], 'Rio': [-22.9068, -43.1729]}
 image_dict = {'800x800': [800, 800], '1920x1080': [1920,1080]}
 
 
-# First selections for city and size of elevation grid
-city = st.sidebar.selectbox('Select City:', [x for x in city_dict.keys()])
-scale = st.sidebar.selectbox('Select Scale:', [x for x in scale_dict.keys()])
 
-custom_coords = st.sidebar.checkbox('Custom Co-Ordinates:', value = False, key = 'custom_coords')
+with st.sidebar:
+    
+        # First selections for city and size of elevation grid
+        city = st.selectbox('Select City:', [x for x in city_dict.keys()])
+        scale = st.selectbox('Select Scale:', [x for x in scale_dict.keys()])
+        
+        st.session_state.Latitude = city_dict.get(city)[0]
+        st.session_state.Longitude = city_dict.get(city)[1]
+        
+        
+        
+        custom_coords = st.checkbox('Custom Co-Ordinates', value = False, key = 'custom_coords', disabled=True, help = 'Disabled for now to avoid spamming Open Source DB')
+        
+        latlong_cols = st.columns([1,1], gap = 'small')
+        
+        with latlong_cols[0]:
+            lat = st.number_input('Latitude:', -90.0000, 90.0000, step = 0.1, key = 'Latitude', format="%.4f")
+            
+        with latlong_cols[1]:
+            long = st.number_input('Longitude:', -180.0000, 180.0000, step = 0.1, key = 'Longitude', format="%.4f")
+            
 
 
 # st.sidebar.markdown('#')
@@ -184,7 +200,7 @@ with st.form(key = 'AppVals'):
 
 
 # Call figure chart with all selected variables
-fig = update_chart(city_dict.get(city)[0], city_dict.get(city)[1], 
+fig = update_chart(st.session_state.Latitude, st.session_state.Longitude, 
                    scale_dict.get(scale)[0], 
                    scale_dict.get(scale)[1],
                    label_dict.get(show_elev_labs),
