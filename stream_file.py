@@ -161,7 +161,7 @@ with st.sidebar:
 # Define reset values that will be used in form state
 def resetcolVals():
 
-    st.session_state.Elevation = 'Nah'
+    st.session_state.Elevation = 'Yes'
     st.session_state.Label = 'Yes'
     st.session_state.BackCol = '#000000'
     st.session_state.ForeCol = '#616375'
@@ -179,10 +179,10 @@ with st.form(key = 'AppVals'):
         side_col_1_1, side_col_1_2 = st.columns([1,1], gap = 'small')
 
         with side_col_1_1:
-            show_elev_labs = st.radio('Show Elevation:', ['Nah', 'Yes'], horizontal=True, key = 'Elevation')
+            show_elev_labs = st.radio('Show Elevation:', ['Yes', 'Nah'], horizontal=True, key = 'Elevation')
 
         with side_col_1_2:
-            show_city_labs = st.radio('Show City:', ['Nah', 'Yes'], horizontal=True, key = 'Label')
+            show_city_labs = st.radio('Show City:', ['Yes', 'Nah'], horizontal=True, key = 'Label')
 
         side_col_1, side_col_2, side_col_3 = st.columns([1,1,1], gap = 'small')
 
