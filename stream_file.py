@@ -136,6 +136,13 @@ size = st.sidebar.selectbox('Select Scale:', ['S', 'M', 'L'])
 
 st.sidebar.markdown('#')
 
+#reset_button = st.button("Reset Chart Appearance") # Give button a variable name
+#if reset_button: # Make button a condition.
+#    start_capture()
+#    st.text("Captured Successfully")
+
+st.sidebar.markdown('#')
+
 side_col_1_1, side_col_1_2 = st.sidebar.columns([1,1], gap = 'large')
 with side_col_1_1:
     line_smooth = st.slider('Contour Smoothness:', 0.0, 1.0, 1.0, step = 0.1)
