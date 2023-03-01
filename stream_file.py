@@ -84,9 +84,7 @@ def update_chart(input1, input2, granularity, size = 2, labels = True):
     fig.update_layout(
         yaxis={'visible': False},
         xaxis={'visible': False},
-        autosize=False,
-        width=800,
-        height=800,
+        autosize=True,
         margin=dict(
             l=50,
             r=50,
