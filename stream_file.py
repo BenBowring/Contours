@@ -58,14 +58,14 @@ def get_grid(lat_co, lon_co, size, granular):
 # Figure Function
 
 @st.cache_data
-def update_chart(input1, input2, granularity, size = 2, labels = True):
+def update_chart(input1, input2, granularity, size = 2, labels = True, line_smooth = 1):
     
     z_data = get_grid(input1, input2, size, granularity)
     
     fig = go.Figure(data =
         go.Contour(
             z = z_data.values,
-            line_smoothing=0.95,
+            line_smoothing=line_smooth,
             line_color = 'slategrey',
             line_width = 1.25,
             showscale=False,
@@ -83,8 +83,8 @@ def update_chart(input1, input2, granularity, size = 2, labels = True):
         ))
 
     fig.update_layout(
-        yaxis={'visible': False},
-        xaxis={'visible': False},
+        yaxis={'visible': False,'fixedrange':True},
+        xaxis={'visible': False,'fixedrange':True},
         height = 800,
         #width = 2400,
         margin=dict(
@@ -93,10 +93,9 @@ def update_chart(input1, input2, granularity, size = 2, labels = True):
             b=0,
             t=0,
             pad=0
-        )
-
+        ),
         
-       
+
     )
 
     fig.add_annotation(text=city,
@@ -109,15 +108,19 @@ def update_chart(input1, input2, granularity, size = 2, labels = True):
     
     return fig
 
+
+st.sidebar.title("Plot the contour map for a certain city or custom co-ords :globe_with_meridians:")
+st.sidebar.write(
+    "Adjust the scale & colours of map and adjust to a given ratio for wallpapers downloads if required!"
+)
+st.sidebar.write(
+    "_Source code on my [GitHub](https://github.com/BenBowring/Contours)._"
+)
+
+st.sidebar.markdown('#')
+st.sidebar.markdown('#')
+
 # User selection of generation inputs
-
-city = st.sidebar.selectbox('Select City:', ['Belfast', 'Edinburgh', 'New York', 'Rio'])
-granularilty = st.sidebar.selectbox('Select Granularity:', ['S', 'M', 'L'])
-size = st.sidebar.selectbox('Select Scale:', ['S', 'M', 'L'])
-show_labs = st.sidebar.radio('Show Elevation Labels:', ['Nah', 'Yes'])
-
-
-# Define dicts so we can pull associated values
 
 granny_dict = {'S': 5, 'M': 9, 'L': 15}
 size_dict = {'S': 2, 'M': 3, 'L': 5}
@@ -125,12 +128,45 @@ label_dict = {'Yes': True, 'Nah': False}
 city_dict = {'Belfast': [54.5973, -5.9301], 'Edinburgh': [55.9533, -3.1883], 
              'New York': [40.7128, -74.0060], 'Rio': [-22.9068, -43.1729]}
 
+
+
+city = st.sidebar.selectbox('Select City:', [x for x in city_dict.keys()])
+granularilty = st.sidebar.selectbox('Select Granularity:', ['S', 'M', 'L'])
+size = st.sidebar.selectbox('Select Scale:', ['S', 'M', 'L'])
+
+st.sidebar.markdown('#')
+
+side_col_1_1, side_col_1_2 = st.sidebar.columns([1,1], gap = 'large')
+with side_col_1_1:
+    line_smooth = st.slider('Contour Smoothness:', 0.0, 1.0, 1.0, step = 0.1)
+
+with side_col_1_2:
+    show_labs = st.radio('Show Elevation Labels:', ['Nah', 'Yes'], horizontal=True)
+
+st.sidebar.markdown('#')
+
+side_col_1, side_col_2, side_col_3 = st.sidebar.columns([1,1,1], gap = 'small')
+with side_col_1:
+    background_col = st.color_picker('Background', '#000000')
+
+with side_col_2:
+    contour_col = st.color_picker('Contours', '#616375')
+    
+with side_col_3:
+    text_col = st.color_picker('Text', '#616375')
+
+# Define dicts so we can pull associated values
+
+
+
 # Select everything from the inputs on the page
+
 
 fig = update_chart(city_dict.get(city)[0], city_dict.get(city)[1], 
                    granny_dict.get(granularilty), 
                    size_dict.get(size),
-                   label_dict.get(show_labs)
+                   label_dict.get(show_labs),
+                   line_smooth
                    )
 
 
