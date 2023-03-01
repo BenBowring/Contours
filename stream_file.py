@@ -135,4 +135,4 @@ fig = update_chart(city_dict.get(city)[0], city_dict.get(city)[1],
 
 
 
-st.plotly_chart(fig, use_container_width=False)
+st.plotly_chart(fig, use_container_width=True)
