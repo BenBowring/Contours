@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
 
+st.set_page_config(layout="wide")
 url = "https://api.opentopodata.org/v1/srtm90m"
 colorscale = [[0, 'black'], [1, 'black']]
 
@@ -84,12 +85,13 @@ def update_chart(input1, input2, granularity, size = 2, labels = True):
     fig.update_layout(
         yaxis={'visible': False},
         xaxis={'visible': False},
-        height=800,
+        height = 800,
+        #width = 2400,
         margin=dict(
-            l=50,
-            r=50,
-            b=50,
-            t=50,
+            l=0,
+            r=0,
+            b=0,
+            t=0,
             pad=0
         )
 
