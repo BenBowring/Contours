@@ -85,13 +85,8 @@ def update_chart(input1, input2, granularity, size = 2, labels = True):
         yaxis={'visible': False},
         xaxis={'visible': False},
         autosize=True,
-        margin=dict(
-            l=50,
-            r=50,
-            b=50,
-            t=50,
-            pad=0
-        ),
+        margin={"r": 0, "t": 0, "l": 0, "b": 0}, 
+        height=800,
 
         
        
