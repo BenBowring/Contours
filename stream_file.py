@@ -166,7 +166,7 @@ with st.form(key = 'AppVals'):
             show_elev_labs = st.radio('Show Elevation:', ['Nah', 'Yes'], horizontal=True, key = 'Elevation')
 
         with side_col_1_2:
-            show_city_labs = st.radio('Show City:', ['Nah', 'Yes'], index = 1, horizontal=True, key = 'Label')
+            show_city_labs = st.radio('Show City:', ['Nah', 'Yes'], horizontal=True, key = 'Label')
 
         side_col_1, side_col_2, side_col_3 = st.columns([1,1,1], gap = 'small')
 
