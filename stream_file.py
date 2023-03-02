@@ -94,7 +94,7 @@ def update_chart(input1, input2, granularity, size, elev_labels, city_label, lin
 
     if city_label:
 
-        fig.add_annotation(text=city,
+        fig.add_annotation(text=st.session_state.chart_label,
                     xref="paper", yref="paper", textangle=-90,
                     x=0.95, y=0.95, showarrow=False)
         
@@ -118,31 +118,60 @@ st.sidebar.markdown('#')
 # Define dictionaries that hold keys in selections and associated values
 scale_dict = {'Small': [5,2], 'Medium': [9,3], 'Large': [15,5]}
 label_dict = {'Yes': True, 'Nah': False}
-city_dict = {'Belfast': [54.5973, -5.9301], 'Edinburgh': [55.9533, -3.1883], 'New York': [40.7128, -74.0060], 'Rio': [-22.9068, -43.1729]}
+city_dict = {'Belfast': [54.5973, -5.9301], 'Edinburgh': [55.9533, -3.1883], 'New York': [40.7128, -74.0060]}
 image_dict = {'800x800': [800, 800], '1920x1080': [1920,1080]}
 
 
 
+# Init global variables to be used in labelling and charting
+
+if 'Latitude' not in st.session_state:
+    st.session_state.Latitude = city_dict.get('Belfast')[0]
+    st.session_state.Longitude = city_dict.get('Belfast')[1]
+
+if 'chart_label' not in st.session_state:
+    st.session_state.chart_label = 'Belfast'
+
+# Callback functions for changes in dropdowns and number inputs
+
+def update_coords():
+    
+    st.session_state.Latitude = city_dict.get(st.session_state.city)[0]
+    st.session_state.Longitude = city_dict.get(st.session_state.city)[1]
+    
+    st.session_state.chart_label = st.session_state.city
+    
+    return
+
+def update_label():
+    
+    
+    if st.session_state.custom_coords:
+        
+        st.session_state.chart_label = f"{st.session_state.Latitude}  {st.session_state.Longitude}"
+
+    else:
+        st.session_state.chart_label = st.session_state.city
+        
+    return
+
+# City and co-ordinate selection, updates both lat/long and chart labelling with callbacks
+
 with st.sidebar:
     
+        custom_coords = st.checkbox('Custom Co-Ordinates', value = False, key = 'custom_coords', on_change=update_label)
+    
         # First selections for city and size of elevation grid
-        city = st.selectbox('Select City:', [x for x in city_dict.keys()])
-        scale = st.selectbox('Select Scale:', [x for x in scale_dict.keys()])
-        
-        st.session_state.Latitude = city_dict.get(city)[0]
-        st.session_state.Longitude = city_dict.get(city)[1]
-        
-        
-        
-        custom_coords = st.checkbox('Custom Co-Ordinates', value = False, key = 'custom_coords', disabled=True, help = 'Disabled for now to avoid spamming Open Source DB')
-        
+        city = st.selectbox('Select City:', [x for x in city_dict.keys()], on_change = update_coords, disabled=st.session_state.custom_coords, key = 'city')
+        scale = st.selectbox('Select Scale:', [x for x in scale_dict.keys()], on_change = update_coords, disabled=st.session_state.custom_coords, key = 'scale')
+            
         latlong_cols = st.columns([1,1], gap = 'small')
         
         with latlong_cols[0]:
-            lat = st.number_input('Latitude:', -90.0000, 90.0000, step = 0.1, key = 'Latitude', format="%.4f")
+            lat = st.number_input('Latitude:', -90.0000, 90.0000, step = 0.1, key = 'Latitude', format="%.4f", disabled=not st.session_state.custom_coords)
             
         with latlong_cols[1]:
-            long = st.number_input('Longitude:', -180.0000, 180.0000, step = 0.1, key = 'Longitude', format="%.4f")
+            long = st.number_input('Longitude:', -180.0000, 180.0000, step = 0.1, key = 'Longitude', format="%.4f", disabled=not st.session_state.custom_coords)
             
 
 
@@ -182,7 +211,7 @@ with st.form(key = 'AppVals'):
             show_elev_labs = st.radio('Show Elevation:', ['Yes', 'Nah'], horizontal=True, key = 'Elevation')
 
         with side_col_1_2:
-            show_city_labs = st.radio('Show City:', ['Yes', 'Nah'], horizontal=True, key = 'Label')
+            show_city_labs = st.radio('Show Label:', ['Yes', 'Nah'], horizontal=True, key = 'Label')
 
         side_col_1, side_col_2, side_col_3 = st.columns([1,1,1], gap = 'small')
 
