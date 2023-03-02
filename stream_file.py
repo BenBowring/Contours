@@ -107,7 +107,7 @@ def update_chart(input1, input2, granularity, size, elev_labels, city_label, lin
 # Initiate sidebar with text and the like
 st.sidebar.title("Plot the contour map for a certain city or custom co-ordinates  :globe_with_meridians:")
 st.sidebar.header(
-    "_Adjust the scale & colours of map and hover over to download!_"
+    "_Adjust the scale & colours of map and hover over to download._"
 )
 st.sidebar.write(
     "_Source code on [GitHub](https://github.com/BenBowring/Contours)._"
